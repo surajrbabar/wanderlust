@@ -92,8 +92,8 @@ app.use("/listings", listingRouter);
 // reviews
 app.use("/listings/:id/reviews", reviewRouter);
 
-app.get("/", async(req, res) => {
-    res.redirect("/listings/home");
+app.get("/", (req, res) => {
+    res.render("listings/home.ejs");
 })
 
 app.all("*", (req, res, next) => {

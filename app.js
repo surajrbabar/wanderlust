@@ -92,6 +92,10 @@ app.use("/listings", listingRouter);
 // reviews
 app.use("/listings/:id/reviews", reviewRouter);
 
+app.get("/", async(req, res) => {
+    res.redirect("/listings/home");
+})
+
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
 })

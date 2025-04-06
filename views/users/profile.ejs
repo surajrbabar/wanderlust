@@ -1,0 +1,171 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+<style>
+
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+/* Left Section: Profile + Verification */
+.left-section {
+    width: 30%;
+}
+
+/* Profile Card */
+.profile-card {
+    width: 100%;
+    border-radius: 22px;
+    box-shadow: 2px 2px 3px 3px rgba(0, 0, 0, 0.15);
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.profile-card-logo {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 50%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+}
+
+.profile-details {
+    margin-left: 1rem;
+}
+
+.profile-details h3 {
+    margin-bottom: 0.2rem;
+}
+
+/* Verification Card */
+.verification-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.verify-btn {
+    border: 1px solid black;
+    background: white;
+    color: black;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.verify-btn:hover {
+    background: black;
+    color: white;
+}
+
+/* Right Section: Bookings */
+.right-section {
+    width: 65%;
+}
+
+/* Booking Grid */
+.booking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+/* Booking Card */
+.booking-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    overflow: hidden;
+}
+
+.booking-card img {
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.booking-info {
+    padding: 10px;
+}
+
+.booking-info h5 {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.booking-info p {
+    margin: 3px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+</style>
+
+<div class="profile-container mb-3">
+    <!-- Left Section (User Profile & Verification) -->
+    <div class="left-section">
+        <div class="profile-card">
+            <div class="profile-card-logo">
+                <h1><%= currUser.username[0].toUpperCase() %></h1>
+            </div>
+            <div class="profile-details">
+                <h3><%= currUser.username %></h3>
+                <p>Guest</p>
+                <p><b>Email:</b> <%= currUser.email %></p>
+            </div>
+        </div>
+
+        <div class="verification-card">
+            <h3><%= currUser.username %>'s Confirmed Information</h3>
+            <p>✔ Email address verified</p>
+            <hr>
+            <h4>Verify your identity</h4>
+            <p>Before you book or host on Wanderlust, you’ll need to complete this step.</p>
+            <button class="verify-btn">Get Verified</button>
+        </div>
+    </div>
+
+    <!-- Right Section (User's Bookings) -->
+    <div class="right-section">
+        <h2>Your Bookings</h2>
+        <% if (bookedListings.length > 0) { %>
+            <div class="booking-grid">
+                <% for(listing of bookedListings){ %>
+                    <div class="booking-card">
+                        <img src="<%= listing.image.url %>" alt="Listing Image">
+                        <div class="booking-info">
+                            <h5><%= listing.title %></h5>
+                            <% for(reservation of listing.reservations){ %>
+                                <% if(currUser._id.equals(reservation.user)){ %>
+                                    <div class="card p-1 mb-1">
+                                        <p><b>Check-in:</b> <%= reservation.checkIn.toDateString() %></p>
+                                        <p><b>Check-out:</b> <%= reservation.checkOut.toDateString() %></p>
+                                        <p><b>Total Cost:</b> &#8377; <%= reservation.totalCost.toLocaleString("en-In") %></p>
+                                    </div>
+                                    
+                                <% } %>
+                                
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <% } else { %>
+            <p>No bookings yet.</p>
+        <% } %>
+    </div>
+</div>

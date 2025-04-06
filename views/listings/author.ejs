@@ -1,0 +1,75 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+<style>
+    
+    .reservation-info {
+        padding: 1rem;
+        border-top: 1px solid #eee;
+        background-color: #f9f9f9;
+    }
+
+    .reservation-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .reservation-card {
+        margin-bottom: 1rem;
+        padding: 0.8rem;
+        border-radius: 0.5rem;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        font-size: 0.95rem;
+        font-family: 'Segoe UI', sans-serif;
+        /* border-radius: 20px; */
+    }
+
+    .reservation-card p {
+        margin: 0.2rem 0;
+    }
+
+    @media (max-width: 768px) {
+        .listing-container {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-2 mb-3">
+    <% for(listing of listings){ %>
+        <a href="/listings/<%= listing._id %>" class="listing-link">
+            <div class="card listing-card" >
+                <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
+                <div class="card-img-overlay"></div>
+                <div class="card-body">
+                <p class="card-text">
+                    <b><%= listing.title %></b><br>
+                    &#8377;<%= listing.price.toLocaleString("en-IN") %> / night
+                    <i class="tax-info">&nbsp; &nbsp; +18 % GST</i>
+                </p>
+                </div>
+                <div class="reservation-info">
+                    <% if(listing.reservations.length !== 0){ %>
+                        <h3>All Reservations</h3>
+                        <% for(reservation of listing.reservations){ %>
+                            <div class="reservation-card">
+                                <p>Guest name : <%= reservation.user.username %> </p>
+                                <p>Check in : <%= reservation.checkIn.toString().slice(4, 15).replace(" ", "-")  %></p>
+                                <p>Check out : <%= reservation.checkOut.toString().slice(4, 15).replace(" ", "-")  %></p>
+                                <p>Total Cost : &#8377;<%= reservation.totalCost.toLocaleString("en-IN") %></p>
+                            </div> 
+                        <% } %>
+                    <% } else{%>
+                    
+                        <h3>Not reserved yet!</h3>
+                    <% } %>
+                    
+                    
+                </div>
+            </div>
+        </a>
+        
+    <% } %>
+</div>

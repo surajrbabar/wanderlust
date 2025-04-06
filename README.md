@@ -85,5 +85,5 @@ You can view it live at:
 
 ### 👨‍💻 Author
 
-**Suraj Babar & Shubham Darekar**  
+**Suraj Babar**  
 Feel free to ⭐ the repo or contribute!
